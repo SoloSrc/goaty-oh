@@ -14,20 +14,38 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package cmd
+package scrape
 
 import (
+	"encoding/json"
 	"fmt"
 
+	"github.com/solosrc/goaty-oh/toolbox/scraper"
 	"github.com/spf13/cobra"
 )
 
-var scrapeCmd = &cobra.Command{
+var url string
+
+var Command = &cobra.Command{
 	Use:   "scrape",
 	Short: "Scrapes the web for card details",
 	Long:  `Runs a Web Scraper that retrieves card details and saves it a the database`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("Placeholder Web Scraper")
+		cards, err := scraper.Visit(url)
+		if err != nil {
+			return err
+		}
+		for _, card := range cards {
+			bytes, err := json.Marshal(card)
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(bytes))
+		}
 		return nil
 	},
+}
+
+func init() {
+	Command.PersistentFlags().StringVar(&url, "url", "", "the URL to scrape")
 }

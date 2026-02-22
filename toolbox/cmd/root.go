@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/solosrc/goaty-oh/toolbox/cmd/scrape"
 	"github.com/spf13/cobra"
 )
 
@@ -37,5 +38,5 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.AddCommand(scrapeCmd)
+	rootCmd.AddCommand(scrape.Command)
 }
